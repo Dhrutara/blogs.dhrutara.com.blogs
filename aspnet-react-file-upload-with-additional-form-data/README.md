@@ -1,5 +1,3 @@
-# Document Signing
+# aspnet-react-file-upload-with-additional-form-data
 
-# Getting Started
-
-# Build and Test
+## A sample application which demonstrates file uploading from react front end to asp.net core backend.
