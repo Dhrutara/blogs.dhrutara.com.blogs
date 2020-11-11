@@ -19,7 +19,8 @@ export default function Home() {
 
         const formData = new FormData();
         formData.append('version', version);
-
+	formData.append('file', selectedFile as Blob, selectedFile?.name);
+	    
         let index = 0;
         authors?.forEach(element => {
             if (element) {
@@ -28,8 +29,6 @@ export default function Home() {
                 index++;
             }
         });
-
-        formData.append('file', selectedFile as Blob, selectedFile?.name);
 
         axios({
             method: 'POST',
