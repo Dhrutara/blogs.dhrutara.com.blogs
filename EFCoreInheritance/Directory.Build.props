@@ -1,0 +1,10 @@
+<Project>
+	<PropertyGroup>
+		<Version>0.0.1</Version>
+		<Authors>Blogs.Dhrutara.Com</Authors>
+		<Company>Blogs.Dhrutara.Com</Company>
+		<LangVersion>9.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+</Project>
