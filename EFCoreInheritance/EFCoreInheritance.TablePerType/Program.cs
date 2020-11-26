@@ -1,5 +1,6 @@
 ﻿//#define insert
 
+using EFCoreInheritance.Domain;
 using EFCoreInheritance.Domain.Entities;
 using System;
 using System.Linq;
@@ -19,17 +20,17 @@ namespace EFCoreInheritance.TablePerType
             RegionPolicyTemplate na = new RegionPolicyTemplate("North America HR Policy", @"\\NA\shared\policies\HrPolicy.docx", DateTime.Now, "kanjinghat", 1);
             RegionPolicyTemplate asia = new RegionPolicyTemplate("Asia HR Policy", @"\\Asia\shared\policies\HrPolicy.docx", DateTime.Now, "kanjinghat", 2);
 
-            CountryPolicyTemplate india = new CountryPolicyTemplate("India HR Policy", @"\\India\shared\policies\HrPolicy.docx", DateTime.Now, "kanjinghat", 1);
-            CountryPolicyTemplate singapore = new CountryPolicyTemplate("Singapore HR Policy", @"\\Singapore\shared\policies\HrPolicy.docx", DateTime.Now, "kanjinghat", 1);
-            CountryPolicyTemplate dubai = new CountryPolicyTemplate("Dubai HR Policy", @"\\Dubai\shared\policies\HrPolicy.docx", DateTime.Now, "kanjinghat", 1);
+            CountryPolicyTemplate india = new CountryPolicyTemplate("India HR Policy", @"\\India\shared\policies\HrPolicy.docx", DateTime.Now, "kanjinghat", 2,1);
+            CountryPolicyTemplate singapore = new CountryPolicyTemplate("Singapore HR Policy", @"\\Singapore\shared\policies\HrPolicy.docx", DateTime.Now, "kanjinghat", 2,2);
+            CountryPolicyTemplate dubai = new CountryPolicyTemplate("Dubai HR Policy", @"\\Dubai\shared\policies\HrPolicy.docx", DateTime.Now, "kanjinghat", 2,3);
 
             policyTemplateDbContext.AddRange(main, na, asia, india, singapore, dubai);
             policyTemplateDbContext.SaveChanges();
 #endif
 
-            var mainPolicy = policyTemplateDbContext.OrganizationPolicyTemplates.FirstOrDefault();
+            var mainPolicy = policyTemplateDbContext.OrganizationPolicyTemplates.FirstOrDefault(t => t.PolicyTemplateHierarchy == PolicyTemplateHierarchy.Organization);
 
-            var regionalPolicies = policyTemplateDbContext.RegionPolicyTemplates.ToList();
+            var regionalPolicies = policyTemplateDbContext.RegionPolicyTemplates.Where(t => t.PolicyTemplateHierarchy == PolicyTemplateHierarchy.Region);
 
             var countryPolicies = policyTemplateDbContext.CountryPolicyTemplates.ToList();
 
@@ -59,7 +60,7 @@ namespace EFCoreInheritance.TablePerType
             {
                 if(country != null)
                 {
-                    Console.WriteLine($"Country Id: {country.Id}, Name: {country.DisplayName}, Location: {country.Location}, Created User: {country.CreatedUser}{Environment.NewLine}");
+                    Console.WriteLine($"Region Id: {country.RegionId}, Country Id: {country.Id}, Name: {country.DisplayName}, Location: {country.Location}, Created User: {country.CreatedUser}{Environment.NewLine}");
                 }
                 
             }

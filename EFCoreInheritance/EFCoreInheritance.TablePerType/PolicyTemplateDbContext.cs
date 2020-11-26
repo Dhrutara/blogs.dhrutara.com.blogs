@@ -18,9 +18,9 @@ namespace EFCoreInheritance.TablePerType
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<OrganizationPolicyTemplate>().ToTable("OrganizationPolicyTemplateTPT");
-            modelBuilder.Entity<RegionPolicyTemplate>().ToTable("RegionPolicyTemplateTPT");
-            modelBuilder.Entity<CountryPolicyTemplate>().ToTable("CountryPolicyTemplateTPT");
+            modelBuilder.Entity<OrganizationPolicyTemplate>().ToTable("OrganizationPolicyTemplate");
+            modelBuilder.Entity<RegionPolicyTemplate>().ToTable("RegionPolicyTemplate");
+            modelBuilder.Entity<CountryPolicyTemplate>().ToTable("CountryPolicyTemplate");
         }
     }
 }

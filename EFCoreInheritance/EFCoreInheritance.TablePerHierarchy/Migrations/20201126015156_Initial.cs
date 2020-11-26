@@ -18,8 +18,8 @@ namespace EFCoreInheritance.TablePerHierarchy.Migrations
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedUser = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: true),
-                    RegionId = table.Column<int>(type: "int", nullable: true)
+                    RegionId = table.Column<int>(type: "int", nullable: true),
+                    CountryId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

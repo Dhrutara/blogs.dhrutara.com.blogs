@@ -2,10 +2,10 @@
 
 namespace EFCoreInheritance.Domain.Entities
 {
-    public record CountryPolicyTemplate : PolicyTemplate
+    public record CountryPolicyTemplate : RegionPolicyTemplate
     {
-        public CountryPolicyTemplate(string displayName, string location, DateTime createdDate, string createdUser, int countryId)
-            : base(PolicyTemplateHierarchy.Country, displayName, location, createdDate, createdUser)
+        public CountryPolicyTemplate(string displayName, string location, DateTime createdDate, string createdUser, int regionId, int countryId)
+            : base(PolicyTemplateHierarchy.Country, displayName, location, createdDate, createdUser, regionId)
         {
             this.CountryId = countryId;
         }

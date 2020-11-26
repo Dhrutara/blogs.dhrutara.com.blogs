@@ -19,7 +19,7 @@ namespace EFCoreInheritance.TablePerHierarchy
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Entity<PolicyTemplate>()
+                .Entity<OrganizationPolicyTemplate>()
                 .ToTable("PolicyTemplate")
                 .HasDiscriminator(x => x.PolicyTemplateHierarchy)
                 .HasValue<OrganizationPolicyTemplate>(PolicyTemplateHierarchy.Organization)

@@ -4,14 +4,16 @@ using EFCoreInheritance.TablePerHierarchy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EFCoreInheritance.TablePerHierarchy.Migrations
 {
     [DbContext(typeof(PolicyTemplateDbContext))]
-    partial class PolicyTemplateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201126015156_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

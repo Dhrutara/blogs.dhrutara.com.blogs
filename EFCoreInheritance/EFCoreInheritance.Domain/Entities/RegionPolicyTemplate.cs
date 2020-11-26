@@ -2,12 +2,17 @@
 
 namespace EFCoreInheritance.Domain.Entities
 {
-    public record RegionPolicyTemplate : PolicyTemplate
+    public record RegionPolicyTemplate : OrganizationPolicyTemplate
     {
-        public RegionPolicyTemplate(string displayName, string location, DateTime createdDate, string createdUser, int regionId) 
-            : base(PolicyTemplateHierarchy.Region, displayName, location, createdDate, createdUser)
+        protected RegionPolicyTemplate(PolicyTemplateHierarchy policyTemplateHierarchy, string displayName, string location, DateTime createdDate, string createdUser, int regionId)
+            : base(policyTemplateHierarchy, displayName, location, createdDate, createdUser)
         {
             this.RegionId = regionId;
+        }
+
+        public RegionPolicyTemplate(string displayName, string location, DateTime createdDate, string createdUser, int regionId) 
+            : this(PolicyTemplateHierarchy.Region, displayName, location, createdDate, createdUser, regionId)
+        {
         }
 
         public int RegionId { get; init; }
