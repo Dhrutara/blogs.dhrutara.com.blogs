@@ -1,0 +1,233 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourcegroupLocation": {
+      "defaultValue": "eastus2",
+      "type": "String",
+      "metadata": {
+        "description": "Change the default value only if really required."
+      }
+    },
+    "environment": {
+      "type": "String",
+      "metadata": {
+        "description": "Could be any valid string like, ci, staging, prod etc."
+      }
+    },
+    "uniqueName": {
+      "type": "String",
+      "metadata": {
+        "description": "A unique name that all the service of this deployment uses"
+      }
+    }
+  },
+  "variables": {
+    "environment_value": "[if(equals(toLower(parameters('environment')), 'prod'), '', toLower(parameters('environment')))]",
+    "resourcegroup_name": "[concat(parameters('uniqueName'), if(greater(length(variables('environment_value')), 0), '-',''), variables('environment_value'))]",
+    "appinsights_name": "[concat(parameters('uniqueName'), '-api', if(greater(length(variables('environment_value')), 0), '-',''), variables('environment_value'))]",
+    "servicebus_namespace": "[concat(parameters('uniqueName'), if(greater(length(variables('environment_value')), 0), '-',''), variables('environment_value'))]",
+    "topic_name": "membershiprequests",
+    "silver_subscription_name": "process-silver",
+    "silver_rule_name": "process-silver-rule",
+    "gold_subscription_name": "process-gold",
+    "gold_rule_name": "process-gold-rule",
+    "platinum_subscription_name": "process-platinum",
+    "platinum_rule_name": "process-platinum-rule"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2020-06-01",
+      "name": "[variables('resourcegroup_name')]",
+      "location": "[parameters('resourcegroupLocation')]",
+      "tags": {
+        "Note": "Membership Request Processing"
+      },
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "[concat(variables('resourcegroup_name'), '-Children')]",
+      "dependsOn": [
+        "[variables('resourcegroup_name')]"
+      ],
+      "resourceGroup": "[variables('resourcegroup_name')]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "type": "microsoft.insights/components",
+              "apiVersion": "2020-02-02-preview",
+              "name": "[variables('appinsights_name')]",
+              "location": "[parameters('resourcegroupLocation')]",
+              "tags": {
+                "Scope": "The Public API endpoint accepts new membership request and adds to the topic"
+              },
+              "kind": "web",
+              "properties": {
+                "Application_Type": "web",
+                "Flow_Type": "Redfield",
+                "Request_Source": "IbizaAIExtension",
+                "IngestionMode": "ApplicationInsights",
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled"
+              }
+            },
+            {
+              "type": "Microsoft.ServiceBus/namespaces",
+              "apiVersion": "2018-01-01-preview",
+              "name": "[variables('servicebus_namespace')]",
+              "location": "[parameters('resourcegroupLocation')]",
+              "sku": {
+                "name": "Standard",
+                "tier": "Standard"
+              },
+              "properties": {
+                "zoneRedundant": false
+              },
+              "resources": [
+                {
+                  "apiVersion": "2017-04-01",
+                  "name": "[concat(variables('servicebus_namespace'), '/', variables('topic_name'))]",
+                  "type": "Microsoft.ServiceBus/namespaces/topics",
+                  "dependsOn": [
+                    "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'))]"
+                  ],
+                  "properties": {
+                    "defaultMessageTimeToLive": "P14D",
+                    "maxSizeInMegabytes": "1024",
+                    "requiresDuplicateDetection": "false",
+                    "duplicateDetectionHistoryTimeWindow": "PT10M",
+                    "enableBatchedOperations": "false",
+                    "supportOrdering": "false",
+                    "autoDeleteOnIdle": "P14D",
+                    "enablePartitioning": "true",
+                    "enableExpress": "false"
+                  },
+                  "resources": [
+                    {
+                      "apiVersion": "2017-04-01",
+                      "name": "[concat(variables('servicebus_namespace'), '/', variables('topic_name'), '/', variables('silver_subscription_name'))]",
+                      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+                      "dependsOn": [
+                        "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'), '/topics/', variables('topic_name'))]",
+                        "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'))]"
+                      ],
+                      "properties": {
+                        "lockDuration": "PT1M",
+                        "requiresSession": "false",
+                        "defaultMessageTimeToLive": "P14D",
+                        "deadLetteringOnMessageExpiration": "false",
+                        "maxDeliveryCount": "10",
+                        "enableBatchedOperations": "false",
+                        "autoDeleteOnIdle": "P14D"
+                      },
+                      "resources": [
+                        {
+                          "apiVersion": "2017-04-01",
+                          "name": "[concat(variables('servicebus_namespace'), '/', variables('topic_name'), '/', variables('silver_subscription_name'), '/', variables('silver_rule_name'))]",
+                          "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions/rules",
+                          "dependsOn": [
+                            "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'), '/topics/', variables('topic_name'), '/subscriptions/', variables('silver_subscription_name'))]",
+                            "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'), '/topics/', variables('topic_name'))]",
+                            "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'))]"
+                          ],
+                          "properties": {
+                            "filterType": "SqlFilter",
+                            "sqlFilter": {
+                              "sqlExpression": "type = 'silver'",
+                              "compatibilityLevel": 20
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "apiVersion": "2017-04-01",
+                      "name": "[concat(variables('servicebus_namespace'), '/', variables('topic_name'), '/', variables('gold_subscription_name'))]",
+                      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+                      "dependsOn": [
+                        "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'), '/topics/', variables('topic_name'))]",
+                        "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'))]"
+                      ],
+                      "properties": {
+                        "lockDuration": "PT1M",
+                        "requiresSession": "false",
+                        "defaultMessageTimeToLive": "P14D",
+                        "deadLetteringOnMessageExpiration": "false",
+                        "maxDeliveryCount": "10",
+                        "enableBatchedOperations": "false",
+                        "autoDeleteOnIdle": "P14D"
+                      },
+                      "resources": [
+                        {
+                          "apiVersion": "2017-04-01",
+                          "name": "[concat(variables('servicebus_namespace'), '/', variables('topic_name'), '/', variables('gold_subscription_name'), '/', variables('gold_rule_name'))]",
+                          "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions/rules",
+                          "dependsOn": [
+                            "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'), '/topics/', variables('topic_name'), '/subscriptions/', variables('gold_subscription_name'))]",
+                            "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'), '/topics/', variables('topic_name'))]",
+                            "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'))]"
+                          ],
+                          "properties": {
+                            "filterType": "SqlFilter",
+                            "sqlFilter": {
+                              "sqlExpression": "type = 'gold'",
+                              "compatibilityLevel": 20
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "apiVersion": "2017-04-01",
+                      "name": "[concat(variables('servicebus_namespace'), '/', variables('topic_name'), '/', variables('platinum_subscription_name'))]",
+                      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+                      "dependsOn": [
+                        "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'), '/topics/', variables('topic_name'))]",
+                        "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'))]"
+                      ],
+                      "properties": {
+                        "lockDuration": "PT1M",
+                        "requiresSession": "false",
+                        "defaultMessageTimeToLive": "P14D",
+                        "deadLetteringOnMessageExpiration": "false",
+                        "maxDeliveryCount": "10",
+                        "enableBatchedOperations": "false",
+                        "autoDeleteOnIdle": "P14D"
+                      },
+                      "resources": [
+                        {
+                          "apiVersion": "2017-04-01",
+                          "name": "[concat(variables('servicebus_namespace'), '/', variables('topic_name'), '/', variables('platinum_subscription_name'), '/', variables('platinum_rule_name'))]",
+                          "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions/rules",
+                          "dependsOn": [
+                            "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'), '/topics/', variables('topic_name'), '/subscriptions/', variables('platinum_subscription_name'))]",
+                            "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'), '/topics/', variables('topic_name'))]",
+                            "[concat('Microsoft.ServiceBus/namespaces/', variables('servicebus_namespace'))]"
+                          ],
+                          "properties": {
+                            "filterType": "SqlFilter",
+                            "sqlFilter": {
+                              "sqlExpression": "type = 'platinum'",
+                              "compatibilityLevel": 20
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
