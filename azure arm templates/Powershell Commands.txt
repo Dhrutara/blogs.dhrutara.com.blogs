@@ -1,0 +1,10 @@
+$security = ConvertTo-SecureString "c7e34668-4a59-4fc4-9953-ada8b32b179d" -AsPlainText -Force
+$pscredential = New-Object -TypeName System.Management.Automation.PSCredential("7bb8d77d-8e0b-4666-96c2-69f045fb34cc",$security)
+Connect-AzAccount -Credential $pscredential -Tenant "14129e49-50a9-4557-bd94-d68e572716a8" -ServicePrincipal
+
+
+#with parameterfile 
+New-AzDeployment -Location "eastus2" -TemplateFile .\arm-template.json -TemplateParameterFile .\parameters.json
+
+#pass parameetrs directly to the command
+New-AzDeployment -Location "eastus2" -TemplateFile .\arm-template.json -resourcegroupLocation "eastus2" -environment "prod" -uniqueName "another-name"

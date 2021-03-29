@@ -1,0 +1,20 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "resourcegroupLocation": {
+        "value": "eastus2"
+      },
+      "environment": {
+        "value": "ci"
+      },
+      "uniqueName": {
+        "value": "some-name"
+      }
+    }
+  }
+
+
+  //New-AzDeployment -Location "eastus2" -TemplateFile .\arm-template.json -TemplateParameterFile .\parameters.json
+
+  //New-AzDeployment -Location "eastus2" -TemplateFile .\arm-template.json -resourcegroupLocation "eastus2" -environment "prod" -uniqueName "another-name"
