@@ -1,0 +1,85 @@
+parameters:
+- name: buildConfiguration
+- name: publishUrl
+- name: environmentName
+- name: deployRootPath
+- name: solutionName
+- name: projectName
+- name: dbMigrations
+  type: object
+  default:
+  - name: runDbMigrations
+    default: false
+  - name: dbConnectionString
+    default: ''
+  - name: executableProjectName
+    default: ''
+
+stages:
+- stage: 'DeployClickOnce'
+  displayName: 'Deploy ClickOnce'
+  jobs:
+  - deployment: 'DeploayClickOnce'
+    displayName: 'Deploy ClickOnce'
+    variables:
+      solutionFolder: '$(Build.SourcesDirectory)\${{parameters.solutionName}}'
+    environment:
+      name: '${{parameters.environmentName}}'
+      resourceType: 'virtualMachine'
+      tags: 'Services'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+
+          # Restore packages.
+          - task: NuGetCommand@2
+            displayName: 'Restore Packages'
+            inputs:
+              command: restore
+              restoreSolution: '**/*.sln'
+              feedsToUse: config
+              nugetConfigPath: '$(solutionFolder)\nuget.config'
+
+          # publish windows forms projects as ClickOnce.
+          - task: PowerShell@2
+            displayName: 'Build and publish'
+            inputs:
+              targetType: 'inline'
+              script: |
+                Set-Location '$(solutionFolder)\${{parameters.projectName}}'
+                & 'C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe' /target:publish /p:Configuration=${{parameters.buildConfiguration}} /p:PublishUrl='${{parameters.publishUrl}}'
+          
+          # Generate Publich.htm file. This is the file that end user access to install the ClickOnce.
+          - task: PowerShell@2
+            displayName: 'Generate Publish.htm'
+            inputs:
+              targetType: 'inline'
+              script: |
+                [xml]$projectFile = Get-Content '$(solutionFolder)\$${{parameters.projectName}}\${{parameters.projectName}}.vbproj'
+                [string]$version = $projectFile.Project.PropertyGroup.MinimumRequiredVersion
+                $publishHtm = Get-Content '$(solutionFolder)\publish.htm' -Raw
+                $updatePublishHtm = $publishHtm -replace '{VERSION}', $version.Trim()
+                $updatePublishHtm | Set-Content -Path '$(solutionFolder)\${{parameters.projectName}}\bin\${{parameters.buildConfiguration}}\app.publish\publish.htm'
+
+          # Copy the published application to the network share.
+          - task: CopyFiles@2
+            displayName: 'Copy files'
+            inputs:
+              sourceFolder: '$(solutionFolder)\${{parameters.projectName}}\bin\${{parameters.buildConfiguration}}\app.publish'
+              contents: '**'
+              targetFolder: '${{parameters.deployRootPath}}'
+              cleanTargetFolder: false
+              overWrite: true
+
+          # Execute the DBMigrations executable to apply the migrations, if any.
+          - ${{if eq(parameters.dbMigrations.runDbMigrations, true)}}:
+          - task: PowerShell@2
+            displayName: 'Run database migrations'
+            inputs:
+              targetType: 'inline'
+              script: |
+                $command = '${{parameters.solutionFolder}}\${{parameters.executableProjectName}}\bin\${{parameters.buildConfiguration}}\${{parameters.executableProjectName}}.exe ${{parameters.dbConnectionString}}'
+                & $command
+
