@@ -1,0 +1,17 @@
+name: $(BuildDefinitionName)-PR.$(Build.SourceBranch)$(Rev:.r)
+
+trigger:
+- ci
+   
+stages:
+
+- template: DeployClickOnce.yml
+  parameters:
+    buildConfiguration: 'Debug'
+    publishUrl: 'The url the end users use to install the ClickOnce application '
+    environmentName: 'CI'
+    deployRootPath: 'The network share where the windows forms project will be deployed as ClickOnce'
+    dbMigrations: 
+     runDbMigrations: true
+     dbConnectionString: 'your database connection string here'
+     executableProjectName: 'Dhrutara.ClickOnce.DBMigrations'
