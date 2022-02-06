@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="Dhrutara.WindowsForms.exe" version="1.0.0.1" publicKeyToken="959c76544ebc4406" language="neutral" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="Dhrutara.WindowsForms" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="Dhrutara.WindowsForms.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet version="1" class="System.Security.NamedPermissionSet" Name="LocalIntranet" Description="Default rights given to applications on the local intranet" Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!-- UAC Manifest Options
+             If you want to change the Windows User Account Control level replace the 
+             requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+            Specifying requestedExecutionLevel element will disable file and registry virtualization. 
+            Remove this element if your application requires this virtualization for backwards
+            compatibility.
+        -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Dhrutara.WindowsForms.exe" size="11512">
+      <assemblyIdentity name="Dhrutara.WindowsForms" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>S9fzZIj62QOe+BGMxsp25EUQYC6qX1o2CFoBFOleOZ0=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="Dhrutara.WindowsForms.exe.config" size="705">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2iueG7QRBCasOPqOoVi36nbxMv9H8pZk1i7SIfXuGpw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- A list of the Windows versions that this application has been tested on
+           and is designed to work with. Uncomment the appropriate elements
+           and Windows will automatically select the most compatible environment. -->
+      <!-- Windows Vista -->
+      <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}" />-->
+      <!-- Windows 7 -->
+      <!--<supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />-->
+      <!-- Windows 8 -->
+      <!--<supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />-->
+      <!-- Windows 8.1 -->
+      <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />-->
+      <!-- Windows 10 -->
+      <!--<supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />-->
+    </application>
+  </compatibility>
+<publisherIdentity name="CN=Dhrutara.ClickOnce" issuerKeyHash="396a9b9464c15b46a59d5e4d4bd76b0d31cc48f4" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>8qDsYr7u53lkUJvUY6KZeVMg290=</DigestValue></Reference></SignedInfo><SignatureValue>VooX5hyyw09rdpFkBk1rU1EoDIxIreXEbXSLf7ky7yNuvRSSxP1p6ocg/HhvL1IH+I9G0MRMwn1PIkMJVP81z7/G2cL3Gv+2cpZVP2dt8hpOYpokdd8WXPbbPhnWE2bT0OF3s0Lqj2QDwkXNuJ1DH7/4okbUTEYB+ODOs76HdnJypl84KkH4QedYIlB6ysMc95pmLMsbeGxIXskqPPZsSF+Ep39dn9JfQik+dn/hon5Gs8Fdxv9417yHUHmR3cxBAfSLkXm/aG9F6rRFeb4a0kOXTj7kFkr5ome/0gmKl2CHavdbfugnss7klX+BCt13TvrkuNnjDmUhB/nJmokZmg==</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>qQ4pTYUILUU14ggI/4g9OPRl+CCCf+OJiW+4XeoKIwIN4EjdgR5HL7MWcPKZJw3nntXNQsOeAroCWz4PxsE3+cYZGki3g7vHU6ip7HCGuRJ0AJ9DIr8yaxuXPOw7Aej4VXRWoIZc03p1QNF/XalLVkiTWbeUwCfak1SnpY4DRgSL7VQDnHT5sW2F+2gAbM0+IzpdfiARFEM2EeYHg1fmaayuUGVq0/Mcfk9h/OE7HLMBrp+r2V3NYTEcmfkAljLFywjuvaEjzwdkoDQiQsP4OtguoAvpOw5BpYpFcB91vn1sRVU/jWHGlQ/lUICPSZKjL3kEik5GyqOWesUmybq8NQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="dddb20537999a263d49b506479e7eebe62eca0f2" Description="" Url=""><as:assemblyIdentity name="Dhrutara.WindowsForms.exe" version="1.0.0.1" publicKeyToken="959c76544ebc4406" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=Dhrutara.ClickOnce</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>aoOPdwvVIHtAT9rYUGXAlQt5EgA=</DigestValue></Reference></SignedInfo><SignatureValue>LU9zYSGdgnmgRTQM+t/D4RH4f48xmCHOldvcN9fhs7qw57j8fs+U1pL5rOSw3+uQsc2TWWc+hCuBXCASRxq8j0tV9siKfPRlargQ9HwioZQkktj5Okp53J6B7KnJAadYVJZJ7Tdk10CTLKVzdizPkN/9QxWRgAOOlJmMMXY1BH2CiOLCPhVbZZIMHLi8TxseZYdShpvHmziIzqzsIQZIZEGcYOgOWaKMlz2ww+S52oUtReaPx/n6HLMpU+It0HjosHhaPbTAjvX4uZBKpixUEu31uTE8RAiFco418fNiUnocZyg6YZ+AhwdUGf7HGjF7dnJ61mEMY71Hl2ywJOy/DA==</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>qQ4pTYUILUU14ggI/4g9OPRl+CCCf+OJiW+4XeoKIwIN4EjdgR5HL7MWcPKZJw3nntXNQsOeAroCWz4PxsE3+cYZGki3g7vHU6ip7HCGuRJ0AJ9DIr8yaxuXPOw7Aej4VXRWoIZc03p1QNF/XalLVkiTWbeUwCfak1SnpY4DRgSL7VQDnHT5sW2F+2gAbM0+IzpdfiARFEM2EeYHg1fmaayuUGVq0/Mcfk9h/OE7HLMBrp+r2V3NYTEcmfkAljLFywjuvaEjzwdkoDQiQsP4OtguoAvpOw5BpYpFcB91vn1sRVU/jWHGlQ/lUICPSZKjL3kEik5GyqOWesUmybq8NQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIICwjCCAaqgAwIBAgIQEQfUISXMPYhG+h2Ii4X6yzANBgkqhkiG9w0BAQUFADAdMRswGQYDVQQDExJEaHJ1dGFyYS5DbGlja09uY2UwHhcNMjIwMjA0MjAwNTAxWhcNMzIwMjA1MjAwNTAxWjAdMRswGQYDVQQDExJEaHJ1dGFyYS5DbGlja09uY2UwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCpDilNhQgtRTXiCAj/iD049GX4IIJ/44mJb7hd6gojAg3gSN2BHkcvsxZw8pknDeee1c1Cw54CugJbPg/GwTf5xhkaSLeDu8dTqKnscIa5EnQAn0MivzJrG5c87DsB6PhVdFaghlzTenVA0X9dqUtWSJNZt5TAJ9qTVKeljgNGBIvtVAOcdPmxbYX7aABszT4jOl1+IBEUQzYR5geDV+ZprK5QZWrT8xx+T2H84TscswGun6vZXc1hMRyZ+QCWMsXLCO69oSPPB2SgNCJCw/g62C6gC+k7DkGlikVwH3W+fWxFVT+NYcaVD+VQgI9JkqMveQSKTkbKo5Z6xSbJurw1AgMBAAEwDQYJKoZIhvcNAQEFBQADggEBADn7ahOTFPCiFEK8tX4UOF5DohRhwchINPbt8CgMrCmZ4/riNotgPutf0JOqvBYGt/vVFagome3Oph6QkE2WNiRqN4J9C24zgQe9v29md5Uo/55iOgZgYJsnt68GAVIhWVc2aU1B6AdlNNmiwCYO6x7XuNpZH0q3RbhjdIx4Hl1RphJ9M1Gf8W6S+koBYOUXOlRkxSj8sY+h1DsvL+HW/BBWtRFJODU2ZQMRNDuGtNxVn1ZBVYYsXklfucNteYSAMQW7D0XsXhR7+U55O34dcck9/Sn7jdVM1ezvnMqFt/8pgL2MaO97e+91B1KlQ+dQp5I3dm660+XP52h+lPwn+mA=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
